@@ -24,7 +24,7 @@ function burp(){
             echo "+-------------------------------------------- +"
             echo "|                  Error                      |" 
             echo "| Burpsuite proxy not running (127.0.0.1:8080)|" 
-            echo -e "+---------------------------------------------+\n\n" && exit
+            echo -e "+---------------------------------------------+\n\n" && banner && exit
       fi
 
 
@@ -45,7 +45,7 @@ function net(){
             echo "+------------------------------------------+"
             echo "|               Error                      |"
             echo "|             No Internet                  |" 
-            echo -e "+------------------------------------------+\n\n"&&exit
+            echo -e "+------------------------------------------+\n\n"&& banner && exit
       fi
 }
 
@@ -63,7 +63,7 @@ function adb_check(){
             echo "|       adb is not running                 |"
             echo "|               oR                         |"
             echo "|   More than one emulator exits           |" 
-            echo -e "+------------------------------------------+\n\n"&& exit
+            echo -e "+------------------------------------------+\n\n"&& banner && exit
       fi
       #checking root access
       adb shell -n 'su -c ""' 2>/dev/null
@@ -74,7 +74,7 @@ function adb_check(){
             echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|  Give root Access to adb from Superuser  |"
-            echo -e "+------------------------------------------+\n\n"&&exit
+            echo -e "+------------------------------------------+\n\n"&& banner && exit
       fi
 
         
@@ -155,7 +155,7 @@ function andro_apps(){
             echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|         ADB Wifi App installed           |"
-            echo -e"+------------------------------------------+\n\n"
+            echo -e "+------------------------------------------+\n\n"
       fi
       ##############Proxy Droid -----------------------
 
@@ -170,7 +170,7 @@ function andro_apps(){
             echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|         ProxyDroid App installed         |"
-            echo -e"+------------------------------------------+\n\n"
+            echo -e "+------------------------------------------+\n\n"
       fi
 
 start
@@ -180,9 +180,9 @@ start
 
 
 function pc_tools(){
-      ################ JADX - Dex to Java decompiler
+      ################ JADX - Dex to Java decompiler, apktool
       ################ Android Screen Share 
-      apt-get -qq install jadx  scrcpy -y 2>/dev/null
+      apt-get -qq install jadx  scrcpy apktool -y 2>/dev/null
       echo "+------------------------------------------+"
       echo "|                                          |"
       echo "|          JADX & Scrcpy  installed        |"
@@ -263,7 +263,7 @@ function frida_ando(){
             wget  -q $baseurl$server_download.xz -O frida-server.xz
             unxz frida-server.xz 2>/dev/null
             adb push frida-server /data/local/tmp/ 2>/dev/null
-            adb shell -n "su -c 'chmod 777 /data/local/tmp/frida-server'"
+            adb shell -n "su -c 'chmod 777 /data/local/tmp/frida-server'" 2>/dev/null 
             adb remount 2>/dev/null  
             adb shell -n "su -c 'remount'" 2>/dev/null 
             if [ $? == 0 ];then 
