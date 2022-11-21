@@ -7,7 +7,6 @@
 
 #for Burpsuite
 function burp(){
-
       check=$(curl -s http://127.0.0.1:8080/ 2>/dev/null |grep Burp -o|head -n1)
 
       if [[ $check == Burp ]]
@@ -188,11 +187,11 @@ function pc_tools(){
       echo "|          JADX & Scrcpy  installed        |"
       echo -e "+------------------------------------------+\n\n"
       
-      frida -h  2>/dev/null 
+      frida --version 2>&1 >/dev/null && objection version 2>&1 >/dev/null
       if [ $? == 0 ];then 
             echo "+------------------------------------------+"
             echo "|                                          |"
-            echo "|       Frida  already installed           |"
+            echo "|   Frida Objection already installed      |"
             echo -e "+------------------------------------------+\n\n"
 
       else
@@ -200,7 +199,7 @@ function pc_tools(){
  
             echo "+------------------------------------------+"
             echo "|                                          |"
-            echo "|         Frida Setup   Ready              |"
+            echo "|         Frida Setup Ready                |"
             echo -e "+------------------------------------------+\n\n"
       fi
 }
@@ -286,7 +285,7 @@ function frida_ando(){
 
 
 ## To install magisk in Genymotion 
-
+#will add this in future 
 function install_magisk(){
            # if device ==genymotion 
            # then 
@@ -333,7 +332,7 @@ function banner(){
             #      "#mm"  #   #         #    # #   #  "#m##   #      #mm#
             
             
-            #Author: @raodev'
+            #Author: github.com/@raoshaab'
             bann1='
             |  __ \                  /\             | |     / _ \ 
             | |__) |___ _ __ ______ /  \   _ __   __| |_ __| | | |
@@ -352,6 +351,7 @@ function start(){
             echo "2. Android Apps(proxytoogle, proxydroid, ADBwifi)"
             echo "3. Pc Tools (JADX, frida, objection, Android Screen Control & Mirror "
             echo "4. Android Frida Server"
+            echo "5. Fix Frida Server Version mismatch"
             echo "0. Exit "
             echo -e "\e[3$(( $RANDOM * 6 / 32767 + 1 ))m"
             echo -e 'I want to install  :-'
@@ -363,11 +363,13 @@ function start(){
             ;;
             2) net; adb_check; andro_apps; banner
             ;;
-            3) net; pc_tools; banner  
+            3) net; pc_tools;   
             ;;
             4) net; adb_check ;frida_ando banner
             ;;
-            0) exit
+            5) net; adb_check
+            ;;
+            0) banner;exit
             ;;
             esac 
             banner       
