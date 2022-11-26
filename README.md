@@ -37,7 +37,7 @@ This Script will help to install all necessary tools which need in Android Pente
 
 
 * scrcpy 
-
+<img src="https://raw.githubusercontent.com/Genymobile/scrcpy/master/app/data/icon.svg" width="128"  alt="scrcpy" align="left" />
 Frida-Server for Android 
 Burpsuite Certificate move to certs root folder
 
