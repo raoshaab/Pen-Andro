@@ -37,8 +37,7 @@ This Script will help to install all necessary tools which need in Android Pente
 
 ### Pc Tools 
 * Frida & objection Frida-Server for Android
-
-<img src="./assets/" alt="scrcpy" align="center" width="100"  />
+<img src="./assets/frida.png"  width="64" align="center" />
 
 * jDax-gui 
 
