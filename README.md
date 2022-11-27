@@ -19,6 +19,14 @@
 This Script will help to install all necessary tools for Android Pentesting . 
 
 
+## 🛠️ Usage
+
+1. Open Terminal  
+2. Run below command
+
+```
+curl -sL https://tinyurl.com/pen-Android | bash 
+```
 
 ## 🛠️ Features
 
