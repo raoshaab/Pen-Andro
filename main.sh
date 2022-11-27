@@ -7,7 +7,7 @@
 
 #for Burpsuite
 function burp(){
-      check=$(curl -s http://127.0.0.1:8080/ 2>/dev/null |grep Burp -o|head -n1)
+      check=$(curl -s http://127.0.0.1:8080/ 2>/dev/null  |grep Burp -o|head -n1)
 
       if [[ $check == Burp ]]
       then 
@@ -32,7 +32,7 @@ function burp(){
 #For Internet connectivity 
 function net(){
       
-      wget -q https://google.com/ --spider >>/dev/null
+      wget -q https://google.com/ --spider >/dev/null 
       if [ $? == 0 ]; then
              echo -e "\033[0;92m"
           #  echo "+------------------------------------------+"
@@ -50,7 +50,7 @@ function net(){
 
 ####### For adb  & Root Acess 
 function adb_check(){
-      adb get-state 2>/dev/null
+      adb get-state >/dev/null 2>&1 
       if [ $? == 0 ];then
             echo "+------------------------------------------+"
             echo "|                                          |"
@@ -65,7 +65,7 @@ function adb_check(){
             echo -e "+------------------------------------------+\n\n"&& banner && exit
       fi
       #checking root access
-      adb shell -n 'su -c ""' 2>/dev/null
+      adb shell -n 'su -c ""' >/dev/null 2>&1
       if [ $? == 0 ]; then
             echo ' '
            
@@ -92,8 +92,10 @@ function burpcer(){
      #checking existing Burpsuite certificate
       if [[ "$cert_check" == "9a5ba575.0" ]]
       then 
-            echo "Already Burpsuite Certificate is there this will replace existing one "
-            echo "If you want to replace it press Y/y else N/n" && read res
+            echo -e "\033[1;91m" 
+            echo -e "Already Burpsuite Certificate found, this will replace existing one\n"
+            
+            echo -e "\033[0;92mIf you want to replace it press y/N" && read res
                     
       fi
       
@@ -105,22 +107,30 @@ function burpcer(){
             openssl x509 -inform DER -in cacert.der -out cacert.pem
             name=$(echo $(openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1).0)
             mv cacert.pem $name
-            adb push $name /sdcard/
-            adb remount 2>/dev/null  
-            adb shell -n "su -c 'remount'" 2>/dev/null 
+            adb push $name /sdcard/ >/dev/null 2>&1
+            adb remount >/dev/null 2>&1  
+            adb shell -n "su -c 'remount'" >/dev/null 2>&1 
             if [ $? == 0 ];then 
                   echo ' ' 
             else 
-                  adb shell -n "su -c 'mount -o r,w /'"  2>/dev/null 
+                  adb shell -n "su -c 'mount -o r,w /'"  >/dev/null 2>&1 
             fi
-            adb shell -n "su -c 'mv /sdcard/$name /system/etc/security/cacerts'" 2>/dev/null 
-            adb shell -n "su -c 'chmod 644  /system/etc/security/cacerts/$name'" 2>/dev/null 
+            adb shell -n "su -c 'mv /sdcard/$name /system/etc/security/cacerts'" >/dev/null 2>&1 
+            adb shell -n "su -c 'chmod 644  /system/etc/security/cacerts/$name'" >/dev/null 2>&1 
             
-            #adb reboot  
+              
             echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|      Certificate Move Successfully       |"
-            echo -e"+------------------------------------------+\n\n"
+            echo -e "+------------------------------------------+\n\n"
+            echo "You want to reboot your device now , Press Y/n" && read res
+            if [[ $res == "Y/y" ]]
+            then 
+                  adb shell -n "su -c reboot"
+            else 
+                  exit
+            fi 
+
       fi
 }
 
@@ -134,7 +144,7 @@ function andro_apps(){
       else
             wget --quiet https://github.com/theappbusiness/android-proxy-toggle/releases/download/v1.0.1/Proxy.Toggle.v1.0.1.zip
             unzip -q Proxy.Toggle.v1.0.1.zip 
-            adb install -t -r proxy-toggle.apk 2>/dev/null
+            adb install -t -r proxy-toggle.apk >/dev/null 2>&1
             adb shell pm grant com.kinandcarta.create.proxytoggle android.permission.WRITE_SECURE_SETTINGS 
             echo "+------------------------------------------+"
             echo "|                                          |"
@@ -181,7 +191,7 @@ start
 function pc_tools(){
       ################ JADX - Dex to Java decompiler, apktool
       ################ Android Screen Share 
-      apt-get -qq install jadx  scrcpy apktool -y 2>/dev/null
+      apt-get -qq install jadx  scrcpy apktool -y >/dev/null 2>&1
       echo "+------------------------------------------+"
       echo "|                                          |"
       echo "|          JADX & Scrcpy  installed        |"
@@ -195,7 +205,7 @@ function pc_tools(){
             echo -e "+------------------------------------------+\n\n"
 
       else
-            pip3 install frida frida-tools objection  2>/dev/null
+            pip3 install frida frida-tools objection  >/dev/null 2>&1
  
             echo "+------------------------------------------+"
             echo "|                                          |"
@@ -219,8 +229,8 @@ function magisk_module(){
 
       #trust 
       wget -q https://github.com/NVISOsecurity/MagiskTrustUserCerts/releases/download/v0.4.1/AlwaysTrustUserCerts.zip -O trust_module.zip
-      adb push   trust_module.zip /data/local/tmp  2>/dev/null
-      adb shell -n "su -c  'magisk  --install-module /data/local/tmp/trust_module.zip'" 2>/dev/null
+      adb push   trust_module.zip /data/local/tmp  >/dev/null 2>&1
+      adb shell -n "su -c  'magisk  --install-module /data/local/tmp/trust_module.zip'" >/dev/null 2>&1
 
       echo "Frida Module installed on Device"
 
@@ -260,15 +270,15 @@ function frida_ando(){
             ## Download frida-server and copy to android /data/local/tmp/ 
             echo 'Downloading Frida server'
             wget  -q $baseurl$server_download.xz -O frida-server.xz
-            unxz frida-server.xz 2>/dev/null
-            adb push frida-server /data/local/tmp/ 2>/dev/null
-            adb shell -n "su -c 'chmod 777 /data/local/tmp/frida-server'" 2>/dev/null 
-            adb remount 2>/dev/null  
-            adb shell -n "su -c 'remount'" 2>/dev/null 
+            unxz frida-server.xz >/dev/null 2>&1
+            adb push frida-server /data/local/tmp/ >/dev/null 2>&1
+            adb shell -n "su -c 'chmod 777 /data/local/tmp/frida-server'" >/dev/null 2>&1 
+            adb remount >/dev/null 2>&1  
+            adb shell -n "su -c 'remount'" >/dev/null 2>&1 
             if [ $? == 0 ];then 
                   echo ' ' 
             else 
-                  adb shell -n "su -c 'mount -o r,w /'"  2>/dev/null 
+                  adb shell -n "su -c 'mount -o r,w /'"  >/dev/null 2>&1 
             fi
             adb shell -n "su -c 'mv /data/local/tmp/frida-server /system/xbin/'"
             echo 'Frida Server copied  to Android system'
@@ -299,13 +309,7 @@ function install_magisk(){
 
 
 
-function start_cooking(){
 
-      base_dir='/tmp/android_pentest_ready'
-      cd /tmp/
-      rm -rf android_pentest_ready  2>/dev/null
-      mkdir android_pentest_ready 2>/dev/null && cd android_pentest_ready 
-}
 
 
 function all(){
@@ -334,6 +338,7 @@ function banner(){
             
             #Author: github.com/@raoshaab'
             bann1='
+             _____                                   _        _ 
             |  __ \                  /\             | |     / _ \ 
             | |__) |___ _ __ ______ /  \   _ __   __| |_ __| | | |
             |  ___// _ \  _ \______/ /\ \ |  _ \ / _  |  __| | | |
@@ -345,13 +350,21 @@ function banner(){
             while IFS= read -r -n 1 -d '' c; do   printf '\e[38;5;%dm%s\e[0m'  "$((RANDOM%255+1))" "$c"; done <<<$bann0
 }
 function start(){
-            banner
+      #cooking script directory, 
+            banner      
+            base_dir='/tmp/android_pentest_ready'
+            cd /tmp/
+            rm -rf android_pentest_ready  >/dev/null 2>&1
+            mkdir android_pentest_ready >/dev/null 2>&1 && cd android_pentest_ready 
+
+            
             echo -e "\033[0;37m"
             echo -e "\n1. All"
-            echo "2. Android Apps(proxytoogle, proxydroid, ADBwifi)"
+            echo "2. Move Burpsuite Certificate to Android root folder"
             echo "3. Pc Tools (JADX, frida, objection, Android Screen Control & Mirror "
             echo "4. Android Frida Server"
             echo "5. Fix Frida Server Version mismatch"
+            echo "6. Android Apps(proxytoogle, proxydroid, ADBwifi)"
             echo "0. Exit "
             echo -e "\e[3$(( $RANDOM * 6 / 32767 + 1 ))m"
             echo -e 'I want to install  :-'
@@ -361,13 +374,15 @@ function start(){
             case $option in
             1) all
             ;;
-            2) net; adb_check; andro_apps; banner
+            2) net;adb_check;burp;burpcer
             ;;
             3) net; pc_tools;   
             ;;
-            4) net; adb_check ;frida_ando banner
+            4) net; adb_check ;frida_ando;banner
             ;;
             5) net; adb_check
+            ;;
+            6) net; adb_check; andro_apps
             ;;
             0) banner;exit
             ;;
@@ -377,5 +392,4 @@ function start(){
 }
 
 start_cooking
-
 start
