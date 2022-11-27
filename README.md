@@ -25,7 +25,34 @@ This Script will help to install all necessary tools for Android Pentesting .
 2. Run below command
 
 ```
-curl -sL https://tinyurl.com/pen-Android | bash 
+curl -sL https://tinyurl.com/pen-Android | sudo bash 
+
+```
+### I want to Install  :- 
+
+```console
+
+curl -sL https://tinyurl.com/pen-Android | sudo bash 
+
+            mmmmm                         mm              #          mmmm
+            #   "#  mmm   m mm            ##   m mm    mmm#   m mm  m"  "m
+            #mmm#" #"  #  #"  #          #  #  #"  #  #" "#   #"  " #  m #
+            #      #""""  #   #   """    #mm#  #   #  #   #   #     #    #
+            #      "#mm"  #   #         #    # #   #  "#m##   #      #mm#
+
+
+            #Author: github.com/@raoshaab
+
+
+1. All
+2. Move Burpsuite Certificate to Android root folder
+3. Pc Tools (JADX, frida, objection, Android Screen Control & Mirror
+4. Android Frida Server
+5. Fix Frida Server Version mismatch
+6. Android Apps(proxytoogle, proxydroid, ADBwifi)
+0. Exit
+
+I want to install  :-
 ```
 
 ## 🛠️ Features
@@ -44,7 +71,7 @@ curl -sL https://tinyurl.com/pen-Android | bash
 <img src="./assets/proxy_toggle.png" width="64" align="center"/>
 
 ### Pc Tools 
-* Frida & objection Frida-Server for Android
+* Frida, objection & Frida-Server for Android
 <img src="./assets/frida.svg"  width="81" align="center" />
 
 * jDax-gui 
@@ -63,10 +90,10 @@ curl -sL https://tinyurl.com/pen-Android | bash
 
 ## Credits :
 
-https://github.com/skylot/jadx
-https://github.com/frida/frida
-https://github.com/madeye/proxydroid
-https://github.com/psuzn/ADB-WiFi
-https://github.com/theappbusiness/android-proxy-toggle
-https://github.com/Genymobile/scrcpy
+1. skylot  https://github.com/skylot/jadx
+2. frida https://github.com/frida/frida
+3. Madeye https://github.com/madeye/proxydroid
+4. Sujan Poudel https://github.com/psuzn/ADB-WiFi
+5. Voicu Klein,Fidel Montesino https://github.com/theappbusiness/android-proxy-toggle]
+6. Genymobile https://github.com/Genymobile/scrcpy
 
