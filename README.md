@@ -16,7 +16,7 @@
 
 
 ## 💥 Introduction 
-This Script will help to install all necessary tools which need in Android Pentesting . 
+This Script will help to install all necessary tools for Android Pentesting . 
 
 
 
@@ -37,7 +37,7 @@ This Script will help to install all necessary tools which need in Android Pente
 
 ### Pc Tools 
 * Frida & objection Frida-Server for Android
-<img src="./assets/frida.png"  width="64" align="center" />
+<img src="./assets/frida.svg"  width="81" align="center" />
 
 * jDax-gui 
 
