@@ -252,7 +252,7 @@ function frida_ando(){
             frida_android=$(adb shell "frida-server --version") 2>/dev/null 
       if [[ $? == 0 ]]
       then 
-            echo -e "\033[1;91m Frida-server already Installed with  $frida_android \n\n \033[0;92mIf you want to upgrade or reinstall Press Y/y "
+            echo -e "\033[1;91mFrida-server already Installed with  $frida_android \n\n \033[0;92mIf you want to upgrade or reinstall Press Y/y "
             exec < /dev/tty && read res && exec <&- 
       fi
 
@@ -345,6 +345,7 @@ function all(){
       pc_tools
       andro_apps
       frida_ando
+      burpcer
 
       }
 
