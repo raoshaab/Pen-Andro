@@ -396,7 +396,7 @@ function start(){
             ;;
             3) net; pc_tools;   
             ;;
-            4) net; adb_check ;frida_ando;banner
+            4) net; adb_check ;frida_ando
             ;;
             5) net; frida_mismatch;
             ;;
