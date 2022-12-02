@@ -195,11 +195,8 @@ function pc_tools(){
       if [[ $? != 0 ]]
       then
             echo 'Installing Pc Tools ' 
-            apt-get -qq install jadx  scrcpy apktool -y &> /dev/null &
-            proc_pid=$!
-            #Progress Bar 
-            while [ -d /proc/$proc_pid ]; do  echo -n ".";sleep 1.2s ;done          
-
+            apt-get -qq install jadx  scrcpy apktool -y &>/dev/null 
+           
             echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|     JADX~Apktool~Scrcpy  installed       |"
@@ -220,12 +217,8 @@ function pc_tools(){
             echo -e "+------------------------------------------+\n\n"
 
       else
-            pip3 install frida frida-tools objection  &>/dev/null &
-            proc_pid=$!
-            #Progress Bar 
-            while [ -d /proc/$proc_pid ]; do  echo -n ".";sleep 1.2s ;done          
-
- 
+            pip3 install frida frida-tools objection  &>/dev/null 
+            
             echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|         Frida Setup Ready                |"
