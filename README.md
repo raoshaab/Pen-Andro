@@ -65,6 +65,9 @@ curl -sL https://tinyurl.com/pen-Android | sudo bash
 I want to install  :-
 ```
 
+## Screenshots 
+
+
 ## 🛠️ Features
 
 ### Android Apps 
