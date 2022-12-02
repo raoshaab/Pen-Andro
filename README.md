@@ -16,7 +16,7 @@
 
 
 ## 💥 Introduction 
-This Script will help to install all necessary tools for Android Pentesting . 
+This Script will automate the process of installing all necessary tools & tasks for Android Pentesting i.e Moving Burpsuite Certificate ,Installing Adb frida server, APKs like proxy toggle, proxydroid, adbwifi.  
 
 
 ## 🛠️ Usage
@@ -32,7 +32,7 @@ curl -sL https://tinyurl.com/pen-Android | sudo bash
 ## Preconditions
 
 * Burpsuite proxy Running at 127.0.0.1:8080
-* Rooted Android device connected via adb 
+* Rooted Android device connected via adb (Only one device should be connected)
 * Magisk App  (It will make installation easy ) 
 1. For Android Virtual device (https://github.com/newbit1/rootAVD)
 2. For Genymotion emulator [Blog Link](https://support.genymotion.com/hc/en-us/articles/360011385178-How-to-install-Xposed-or-Magisk-Edxposed-with-Genymotion-Device-image-PaaS-)
@@ -96,6 +96,13 @@ I want to install  :-
 * Burpsuite Certificate install
 
 <img src="./assets/burpsuite-logo.svg" alt="scrcpy" align="center" width="64" />
+
+
+## FAQs :
+* Burpsuite Error :-  Check Proxy tab of Burpsuite at set the proxy as 127.0.0.1 with port 8080
+* Root access Error :-  Check If your device is Rooted or not (If not confirmed check 
+* Traffic not intercepting :- Reboot the device after Certificate installtion 
+* One or more devices conncted :- check with ```adb devices``` or try ```adb kill-server```(to remove offline devices)
 
 
 ## Credits :
