@@ -1,4 +1,4 @@
-!#/bin/bash 
+#!/bin/bash 
 #Author: @raodev
 #############Checking for pre-condition###########
 
@@ -182,7 +182,7 @@ function andro_apps(){
             echo -e "+------------------------------------------+\n\n"
       fi
 
-start
+
 }
 
 #Pc tools 
@@ -385,8 +385,10 @@ function start(){
             echo "6. Android Apps(proxytoogle, proxydroid, ADBwifi)"
             echo "0. Exit "
             echo -e "\e[3$(( $RANDOM * 6 / 32767 + 1 ))m"
-            echo -e 'I want to install  :-'
-            read option && clear
+            echo -e "I want to install  :-"
+            # Allows us to read user input below, assigns stdin to keyboard and then again to script
+            exec < /dev/tty && read option && exec <&- && clear
+            
 
             #Acting on the user input
             case $option in
@@ -396,11 +398,13 @@ function start(){
             ;;
             3) net; pc_tools;   
             ;;
-            4) net; adb_check ;frida_ando
+            4) net; adb_check ;frida_ando;banner
             ;;
             5) net; frida_mismatch;
             ;;
             6) net; adb_check; andro_apps
+            ;;
+            0) banner;exit
             ;;
             esac 
             banner       
