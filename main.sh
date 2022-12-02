@@ -32,7 +32,7 @@ function burp(){
 #For Internet connectivity 
 function net(){
       
-      wget -q https://google.com/ --spider >/dev/null 
+       ping 8.8.8.8 -c1 &>/dev/null 
       if [ $? == 0 ]; then
              echo -e "\033[0;92m"
           #  echo "+------------------------------------------+"
@@ -191,13 +191,24 @@ start
 function pc_tools(){
       ################ JADX - Dex to Java decompiler, apktool
       ################ Android Screen Share 
-      apt-get -qq install jadx  scrcpy apktool -y >/dev/null 2>&1
-      echo "+------------------------------------------+"
-      echo "|                                          |"
-      echo "|          JADX & Scrcpy  installed        |"
-      echo -e "+------------------------------------------+\n\n"
+      (jadx --version | scrcpy  -v && apktool -version) &>/dev/null  
+      if [[ $? != 0 ]]
+      then
+
+            apt-get -qq install jadx  scrcpy apktool -y &> /dev/null 
+             echo "+------------------------------------------+"
+            echo "|                                          |"
+            echo "|     JADX~Apktool~Scrcpy  installed       |"
+            echo -e "+------------------------------------------+\n\n"
       
-      frida --version 2>&1 >/dev/null && objection version 2>&1 >/dev/null
+      else
+            echo "+------------------------------------------+"
+            echo "|                                          |"
+            echo "|  JADX~Apktool~Scrcpy already installed   |"
+            echo -e "+------------------------------------------+\n\n"
+      fi
+
+      (frida --version  && objection version )>&/dev/null
       if [ $? == 0 ];then 
             echo "+------------------------------------------+"
             echo "|                                          |"
@@ -306,7 +317,14 @@ function install_magisk(){
 }
 
 
+#frida version mismatch
 
+function frida_mismatch(){
+      ps_version=$(frida --version 2>/dev/null )
+      android_frida_version=$(adb shell -n 'sh -c "frida-server --version"'  2>/dev/null)
+      echo "Comming soon :) "
+
+}
 
 
 
@@ -380,7 +398,7 @@ function start(){
             ;;
             4) net; adb_check ;frida_ando;banner
             ;;
-            5) net; adb_check
+            5) net; frida_mismatch;
             ;;
             6) net; adb_check; andro_apps
             ;;
@@ -391,5 +409,4 @@ function start(){
 
 }
 
-start_cooking
 start
