@@ -66,7 +66,7 @@ I want to install  :-
 ```
 
 ## Screenshots 
-
+<img src="./assets/screen.gif" />
 
 ## 🛠️ Features
 
