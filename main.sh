@@ -95,8 +95,9 @@ function burpcer(){
             echo -e "\033[1;91m" 
             echo -e "Already Burpsuite Certificate found, this will replace existing one\n"
             
-            echo -e "\033[0;92mIf you want to replace it press y/N" && read res
-                    
+            echo -e "\033[0;92mIf you want to replace it press y/N" 
+            exec < /dev/tty && read res && exec <&-
+      
       fi
       
       if  [[ $res == "N/n" ]]
@@ -123,13 +124,9 @@ function burpcer(){
             echo "|                                          |"
             echo "|      Certificate Move Successfully       |"
             echo -e "+------------------------------------------+\n\n"
-            echo "You want to reboot your device now , Press Y/n" && read res
-            if [[ $res == "Y/y" ]]
-            then 
-                  adb shell -n "su -c reboot"
-            else 
-                  exit
-            fi 
+            echo "Device will reboot now :><: " 
+            adb reboot &
+            
 
       fi
 }
