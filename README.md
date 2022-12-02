@@ -28,6 +28,16 @@ This Script will help to install all necessary tools for Android Pentesting .
 curl -sL https://tinyurl.com/pen-Android | sudo bash 
 
 ```
+
+## Preconditions
+
+* Burpsuite proxy Running at 127.0.0.1:8080
+* Rooted Android device connected via adb 
+* Magisk App  (It will make installation easy ) 
+1. For Android Virtual device (https://github.com/newbit1/rootAVD)
+2. For Genymotion emulator [Blog Link](https://support.genymotion.com/hc/en-us/articles/360011385178-How-to-install-Xposed-or-Magisk-Edxposed-with-Genymotion-Device-image-PaaS-)
+
+
 ### I want to Install  :- 
 
 ```console
