@@ -402,8 +402,6 @@ function start(){
             ;;
             6) net; adb_check; andro_apps
             ;;
-            0) banner;exit
-            ;;
             esac 
             banner       
 
