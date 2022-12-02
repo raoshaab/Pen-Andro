@@ -1,5 +1,5 @@
 #!/bin/bash 
-#Author: @raodev
+#Author: @github.com/raoshaab
 #############Checking for pre-condition###########
 
 
@@ -194,9 +194,13 @@ function pc_tools(){
       (jadx --version | scrcpy  -v && apktool -version) &>/dev/null  
       if [[ $? != 0 ]]
       then
+            echo 'Installing Pc Tools ' 
+            apt-get -qq install jadx  scrcpy apktool -y &> /dev/null &
+            proc_pid=$!
+            #Progress Bar 
+            while [ -d /proc/$proc_pid ]; do  echo -n ".";sleep 1.2s ;done          
 
-            apt-get -qq install jadx  scrcpy apktool -y &> /dev/null 
-             echo "+------------------------------------------+"
+            echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|     JADX~Apktool~Scrcpy  installed       |"
             echo -e "+------------------------------------------+\n\n"
@@ -216,7 +220,11 @@ function pc_tools(){
             echo -e "+------------------------------------------+\n\n"
 
       else
-            pip3 install frida frida-tools objection  >/dev/null 2>&1
+            pip3 install frida frida-tools objection  &>/dev/null &
+            proc_pid=$!
+            #Progress Bar 
+            while [ -d /proc/$proc_pid ]; do  echo -n ".";sleep 1.2s ;done          
+
  
             echo "+------------------------------------------+"
             echo "|                                          |"
