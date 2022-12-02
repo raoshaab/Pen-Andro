@@ -1,4 +1,4 @@
-
+!#/bin/bash 
 #Author: @raodev
 #############Checking for pre-condition###########
 
