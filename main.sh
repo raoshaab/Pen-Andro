@@ -95,14 +95,13 @@ function burpcer(){
             echo -e "\033[1;91m" 
             echo -e "Already Burpsuite Certificate found, this will replace existing one\n"
             
-            echo -e "\033[0;92mIf you want to replace it press y/N" 
+            echo -e "\033[0;92mIf you want to replace it press Y if not then N/n " 
             exec < /dev/tty && read res && exec <&-
       
       fi
       
       if [[ $res == 'N' || $res == 'n' ]]
-
-            then 
+      then  
             echo 'No changes in Burp Certificate '
       elif [[ $res == 'Y' || $res == 'y' ]] ;then 
             wget --quiet  127.0.0.1:8080/cert -O cacert.der 
