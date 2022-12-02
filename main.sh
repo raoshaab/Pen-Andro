@@ -248,8 +248,16 @@ function magisk_module(){
 
 
 function frida_ando(){
-     ## if  adb shell 'frida-server --version' -n then 
-      
+      #Checking for frida-server in android 
+      frida_android=$(adb shell "frida-server --version") 2>/dev/null 
+if [[ $? == 0 ]]
+then 
+      echo -e "\033[1;91m Frida-server already Installed with  $frida_android \n\n \033[0;92mIf you want to upgrade or reinstall Press Y/y "
+      exec < /dev/tty && read res && exec <&- 
+fi
+
+if [[ $res == 'Y|y' ]]
+then 
       magisk_version=$(adb shell "magisk -v|cut -d ':' -f2")
       if [[ $magisk_version == "MAGISK" ]]
       then  
@@ -298,8 +306,10 @@ function frida_ando(){
             echo -e "+------------------------------------------+\n\n"
             echo ""
             echo "adb shell -n su -c frida-server --version "
-     #Command to set here to run the android server everytime  by shortcut, export android-frida=$(adb shell -n "su -c '/data/local/tmp/myserver &'")
      fi 
+else 
+      echo 'Frida-server Installed'  
+fi
 }
 
 
@@ -396,7 +406,7 @@ function start(){
             ;;
             3) net; pc_tools;   
             ;;
-            4) net; adb_check ;frida_ando;banner
+            4) net; adb_check ;frida_ando
             ;;
             5) net; frida_mismatch;
             ;;
@@ -405,7 +415,7 @@ function start(){
             0) banner;exit
             ;;
             esac 
-            banner       
+            start       
 
 }
 
