@@ -2,17 +2,8 @@
 
 ![](https://visitor-badge.glitch.me/badge?page_id=raoshaab.flash-repo)
 
-  
-```
-
-                      mmmmm                         mm              #          mmmm
-                      #   "#  mmm   m mm            ##   m mm    mmm#   m mm  m"  "m
-                      #mmm#" #"  #  #"  #          #  #  #"  #  #" "#   #"  " #  m #
-                      #      #""""  #   #   """    #mm#  #   #  #   #   #     #    #
-                      #      "#mm"  #   #         #    # #   #  "#m##   #      #mm#
-
-
-```
+ 
+![](./assets/animation.gif)
 
 
 ## 💥 Introduction 
