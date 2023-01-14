@@ -73,6 +73,10 @@ function adb_check(){
             echo "+------------------------------------------+"
             echo "|                                          |"
             echo "|  Give root Access to adb from Superuser  |"
+            echo "|                                          |"
+            echo "|   If using Android Studio Emulator       |"
+            echo "|   ==>  https://github.com/newbit1/rootAVD|"
+            echo "|   For genymotion https://t.ly/n_5F       |"
             echo -e "+------------------------------------------+\n\n"&& banner && exit
       fi
 
@@ -125,7 +129,7 @@ function burpcer(){
             echo "|      Certificate Move Successfully       |"
             echo -e "+------------------------------------------+\n\n"
             echo "Device will reboot now :><: " 
-            adb reboot &
+            echo "adb reboot &"
             
 
       fi
@@ -246,69 +250,89 @@ function magisk_module(){
 
 }
 
+function frida_manual(){
+      android_cpu=$(adb shell getprop | egrep "ro.product.cpu.abi]"|awk '{print $2}'|sed 's/\[//g'|sed 's/\]//g')
+      frida_version=$(curl -IkLs -o /dev/null -w %{url_effective}  https://github.com/frida/frida/releases/latest|grep -o "[^/]*$"| sed "s/v//g")
+
+      ##choose frida server matches android cpu---------------------------
+      baseurl="https://github.com/frida/frida/releases/download/$frida_version/frida-server-$frida_version-android-"
+
+      if   [[ $android_cpu =~ ^x86 ]]; then
+            server_download="x86"
+      elif [[ $android_cpu =~ ^arm64 ]]; then
+            server_download="arm64"
+      
+      elif [[ $android_cpu =~ ^x86_64 ]]; then
+            server_download="x86_64"
+      elif [[ $android_cpu =~ ^arm ]]; then
+            server_download="arm"
+      else 
+            echo something is wrong
+      fi
+
+      ## Download frida-server and copy to android /data/local/tmp/ 
+      echo 'Downloading Frida server'
+      wget  -q $baseurl$server_download.xz -O frida-server.xz
+      unxz frida-server.xz >/dev/null 2>&1
+      adb push frida-server /data/local/tmp/ >/dev/null 2>&1
+      adb shell -n "su -c 'chmod 777 /data/local/tmp/frida-server'" >/dev/null 2>&1 
+      adb remount >/dev/null 2>&1  
+      adb shell -n "su -c 'remount'" >/dev/null 2>&1 
+      if [ $? == 0 ];then 
+            echo ' ' 
+      else 
+            adb shell -n "su -c 'mount -o r,w /'"  >/dev/null 2>&1 
+      fi
+      adb shell -n "su -c 'mv /data/local/tmp/frida-server /system/xbin/'"
+      echo 'Frida Server copied  to Android system'
+
+      echo "+------------------------------------------+"
+      echo "|                                          |"
+      echo "|  Setup Ready  with Android frida         |"
+      echo -e "+------------------------------------------+\n\n\n"
+      echo "To Check version of frida server ,run command "
+      echo -e "adb shell -n \"su -c 'frida-server --version'\"\n\n\n"
+      echo "To run the frida-sever run below command "
+       echo -e "adb shell -n \"su -c 'frida-server '\"\n\n\n"
+      
+}
 
 function frida_ando(){
       #Checking for frida-server in android 
-            frida_android=$(adb shell "frida-server --version") 2>/dev/null 
-      if [[ $? == 0 ]]
+      frida_android=$(adb shell "frida-server --version" 2>/dev/null )
+      res=$(echo $?)
+      
+      if [[ $res == 0 ]]
       then 
-            echo -e "\033[1;91mFrida-server already Installed with  $frida_android \n\n \033[0;92mIf you want to upgrade or reinstall Press Y/y "
-            exec < /dev/tty && read res && exec <&- 
-      fi
+            echo -e "\033[1;91mFrida-server already Installed with version ${frida_android} \n\n \033[0;92mIf you want to upgrade or reinstall Press Y/y "
+            exec < /dev/tty && read res && exec <&-       
+            if [[ $res == 'Y' || $res == 'y' ]]
+            then 
+                  magisk_version=$(adb shell "magisk -v|cut -d ':' -f2" 2>/dev/null)
+                  if [[ $magisk_version == "MAGISK" ]]
+                  then  
+                  #magisk  will flash frida server module which autostart on reboot
+                        magisk_module
+                  else 
+                        frida_manual
+                  fi
+            else     
+                  echo 'Frida-server already Installed'  
+            fi 
 
-      if [[ $res == 'Y' || $res == 'y' ]]
-      then 
+      elif [[ $res == 127 ]]
+      then  
             magisk_version=$(adb shell "magisk -v|cut -d ':' -f2")
             if [[ $magisk_version == "MAGISK" ]]
             then  
             #magisk  will flash frida server module which autostart on reboot
                   magisk_module
-
             else 
-                  android_cpu=$(adb shell getprop | egrep "ro.product.cpu.abi]"|awk '{print $2}'|sed 's/\[//g'|sed 's/\]//g')
-                  frida_version=$(curl -IkLs -o /dev/null -w %{url_effective}  https://github.com/frida/frida/releases/latest|grep -o "[^/]*$"| sed "s/v//g")
-
-                  ##choose frida server matches android cpu---------------------------
-                  baseurl="https://github.com/frida/frida/releases/download/$frida_version/frida-server-$frida_version-android-"
-
-                  if   [[ $android_cpu =~ ^x86 ]]; then
-                        server_download="x86"
-                  elif [[ $android_cpu =~ ^arm64 ]]; then
-                        server_download="arm64"
-                  
-                  elif [[ $android_cpu =~ ^x86_64 ]]; then
-                        server_download="x86_64"
-                  elif [[ $android_cpu =~ ^arm ]]; then
-                        server_download="arm"
-                  else 
-                        echo something is wrong
-                  fi
-
-                  ## Download frida-server and copy to android /data/local/tmp/ 
-                  echo 'Downloading Frida server'
-                  wget  -q $baseurl$server_download.xz -O frida-server.xz
-                  unxz frida-server.xz >/dev/null 2>&1
-                  adb push frida-server /data/local/tmp/ >/dev/null 2>&1
-                  adb shell -n "su -c 'chmod 777 /data/local/tmp/frida-server'" >/dev/null 2>&1 
-                  adb remount >/dev/null 2>&1  
-                  adb shell -n "su -c 'remount'" >/dev/null 2>&1 
-                  if [ $? == 0 ];then 
-                        echo ' ' 
-                  else 
-                        adb shell -n "su -c 'mount -o r,w /'"  >/dev/null 2>&1 
-                  fi
-                  adb shell -n "su -c 'mv /data/local/tmp/frida-server /system/xbin/'"
-                  echo 'Frida Server copied  to Android system'
-            
-                  echo "+------------------------------------------+"
-                  echo "|                                          |"
-                  echo "|  Setup Ready  with Android frida         |"
-                  echo -e "+------------------------------------------+\n\n"
-                  echo ""
-                  echo "adb shell -n su -c frida-server --version "
-      fi 
-      else 
-            echo 'Frida-server Installed'  
+            #downloading frida-server from source 
+                  frida_manual
+            fi 
+      else
+            echo function not working
       fi
 }
 
