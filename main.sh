@@ -6,8 +6,10 @@
 
 
 #for Burpsuite
+
 function burp(){
-      check=$(curl -s http://127.0.0.1:8080/ 2>/dev/null  |grep Burp -o|head -n1)
+      default_ip='127.0.0.1:8080'
+      check=$(curl -s http://${default_ip}/ 2>/dev/null  |grep Burp -o|head -n1)
 
       if [[ $check == Burp ]]
       then 
@@ -20,13 +22,34 @@ function burp(){
       
       else
             echo -e "\033[1;91m" 
-            echo "+-------------------------------------------- +"
-            echo "|                  Error                      |" 
-            echo "| Burpsuite proxy not running (127.0.0.1:8080)|" 
-            echo -e "+---------------------------------------------+\n\n" && banner && exit
+            echo "+----------------------------------------------- +"
+            echo "|                  Error                         |" 
+            echo "| Burpsuite proxy not running at(127.0.0.1:8080) |" 
+            echo -e "+-----------------------------------------------+\n\n" 
+      
+      #To enter other Ip address and port 
+       
+            echo "Enter the Burpsuite Ip and port i.e 192.168.1.1:9001" 
+            exec < /dev/tty && read proxy && exec <&-
+
+            check=$(curl -s ${proxy} 2>/dev/null  |grep Burp -o|head -n1)
+            if [[ $check == Burp ]]
+            then 
+                  echo "+------------------------------------------+"
+                  echo "|                                          |"
+                  echo "|         Burpsuite Running done !!        |"
+                  echo -e "+------------------------------------------+\n\n"
+                  set default_ip=${proxy}
+
+            
+            else
+                  echo -e "\033[1;91m" 
+                  echo "+------------------------------------------------+"
+                  echo "|                  Error                         |" 
+                  echo "| Burpsuite proxy not running at (${proxy})|" 
+                  echo -e "+---------------------------------------------+\n\n" && banner && exit
+            fi
       fi
-
-
 }
 
 #For Internet connectivity 
@@ -108,7 +131,7 @@ function burpcer(){
       then  
             echo 'No changes in Burp Certificate '
       elif [[ $res == 'Y' || $res == 'y' ]] ;then 
-            wget --quiet  127.0.0.1:8080/cert -O cacert.der 
+            wget --quiet  ${default_ip}/cert -O cacert.der 
             openssl x509 -inform DER -in cacert.der -out cacert.pem
             name=$(echo $(openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1).0)
             mv cacert.pem $name
@@ -228,7 +251,6 @@ function pc_tools(){
 }
 
 #android 
-
 # not able match android_cpu with frida, use ~= ,using regex to match 
 
 #if magisk is available then frida_magisk module will install 
@@ -236,9 +258,14 @@ function magisk_module(){
     #frida
       magisk_version=$(curl -IkLs -o /dev/null -w %{url_effective}  https://github.com/ViRb3/magisk-frida/releases/latest|grep -o "[^/]*$"| sed "s/v//g")
       baseurl="https://github.com/ViRb3/magisk-frida/releases/download/$magisk_version/MagiskFrida-$magisk_version.zip"
+      echo '      Downloading Module .....'
       wget --quiet $baseurl -O frida_module.zip
-      adb push frida_module.zip /data/local/tmp 
-      adb shell -n "su -c  'magisk  --install-module /data/local/tmp/frida_module.zip'"
+      adb push frida_module.zip /data/local/tmp/ >/dev/null 2>&1
+      echo '      Flashing MagsikFrida .......'
+      echo -e '\n\n    ********************************************
+    *               MagiskFrida                *
+    ********************************************'
+      adb shell -n "su -c  'magisk  --install-module /data/local/tmp/frida_module.zip' " >/dev/null 2>&1
 
       #trust 
       wget -q https://github.com/NVISOsecurity/MagiskTrustUserCerts/releases/download/v0.4.1/AlwaysTrustUserCerts.zip -O trust_module.zip
@@ -283,7 +310,7 @@ function frida_manual(){
       else 
             adb shell -n "su -c 'mount -o r,w /'"  >/dev/null 2>&1 
       fi
-      adb shell -n "su -c 'mv /data/local/tmp/frida-server /system/xbin/'"
+      adb shell -n "su -c 'mv /data/local/tmp/frida-server /system/xbin/frida-server'"
       echo 'Frida Server copied  to Android system'
 
       echo "+------------------------------------------+"
@@ -300,9 +327,8 @@ function frida_manual(){
 function frida_ando(){
       #Checking for frida-server in android 
       frida_android=$(adb shell "frida-server --version" 2>/dev/null )
-      res=$(echo $?)
-      
-      if [[ $res == 0 ]]
+      check=$(echo $frida_android |grep -o '\.'|head -n1)
+      if [[ $check = '.' ]]
       then 
             echo -e "\033[1;91mFrida-server already Installed with version ${frida_android} \n\n \033[0;92mIf you want to upgrade or reinstall Press Y/y "
             exec < /dev/tty && read res && exec <&-       
@@ -320,9 +346,9 @@ function frida_ando(){
                   echo 'Frida-server already Installed'  
             fi 
 
-      elif [[ $res == 127 ]]
+      elif [[ $check = '' ]]
       then  
-            magisk_version=$(adb shell "magisk -v|cut -d ':' -f2")
+            magisk_version=$(adb shell "magisk -v|cut -d ':' -f2" 2>/dev/null)
             if [[ $magisk_version == "MAGISK" ]]
             then  
             #magisk  will flash frida server module which autostart on reboot
@@ -332,7 +358,7 @@ function frida_ando(){
                   frida_manual
             fi 
       else
-            echo function not working
+            echo function not working 
       fi
 }
 
@@ -352,14 +378,33 @@ function install_magisk(){
 #frida version mismatch
 
 function frida_mismatch(){
-      ps_version=$(frida --version 2>/dev/null )
-      android_frida_version=$(adb shell -n 'sh -c "frida-server --version"'  2>/dev/null)
-      echo "Comming soon :) "
+      lat_frida_version=$(curl -IkLs -o /dev/null -w %{url_effective}  https://github.com/frida/frida/releases/latest|grep -o "[^/]*$"| sed "s/v//g")
+      
+      pc_version=$(frida --version 2>/dev/null )
+      android_version=$(adb shell -n 'sh -c "/data/local/tmp/frida-server --version"'  2>/dev/null)
 
+      echo -e " Latest Version  => ${lat_frida_version} \n Pc version      => ${pc_version} \n Android Version => ${android_version}"
+
+      if [[ ${pc_version} != ${android_version} ]]
+      then 
+                  
+            if [[ ${lat_frida_version} != ${pc_version} ]]
+            then 
+
+                  echo -e "\n\tPc Version is outdated\n"
+                  echo "Downloading latest version ......."
+                  pip3 install frida  --upgrade  &>/dev/null 
+                  echo -e "\n\nLatest version installed "
+            elif [[ ${lat_frida_version} != ${android_version} ]]
+            then 
+                  frida_android 
+            fi
+      elif [[ ${android_version} == ${pc_version} ]] 
+      then 
+            echo -e "\n\n Same Version in Android (${android_version}) and Pc (${pc_version})"  
+      fi
+      
 }
-
-
-
 
 
 function all(){
@@ -370,10 +415,21 @@ function all(){
       andro_apps
       frida_ando
       burpcer
+      echo "Reboot Android device to reflect changes"
+      #adb reboot
 
-      }
+}
 
-################ All neccesary function defined above ###################
+function apk_pull(){
+      version=$(curl -IkLs -o /dev/null -w %{url_effective}  https://github.com/REAndroid/APKEditor/releases/latest|grep -o "[^/]*$"| sed "s/V//g")
+      base_url="https://github.com/REAndroid/APKEditor/releases/download/V${version}/APKEditor-${version}.jar"
+      wget --quiet $base_url -O  apk-editor.jar
+
+      ap k_pull=$(java -jar apk-editor.jar -i )
+
+}
+
+################ All neccesary functions must defined above ###################
 
 function banner(){
           #Color change  everytime
@@ -427,13 +483,13 @@ function start(){
             case $option in
             1) all
             ;;
-            2) net;adb_check;burp;burpcer
+            2) net; adb_check;burp;burpcer
             ;;
             3) net; pc_tools;   
             ;;
             4) net; adb_check ;frida_ando
             ;;
-            5) net; frida_mismatch;
+            5) net; adb_check;frida_mismatch;
             ;;
             6) net; adb_check; andro_apps
             ;;
