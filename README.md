@@ -21,12 +21,15 @@ curl -sL https://tinyurl.com/pen-Android | sudo bash
 ```
 
 ## Preconditions
-
-* Burpsuite proxy Running at 127.0.0.1:8080
+ 
+* Kali-Linux or wsl in Windows(Version 1 recommended)  [Installation Method ](https://learn.microsoft.com/en-us/windows/wsl/install) 
+* Burpsuite proxy Running at 127.0.0.1:8080 or you can specify the ip:port 
 * Rooted Android device connected via adb (Only one device should be connected)
+
 * Magisk App  (It will make installation easy ) 
 1. For Android Virtual device (https://github.com/newbit1/rootAVD)
-2. For Genymotion emulator [Blog Link](https://support.genymotion.com/hc/en-us/articles/360011385178-How-to-install-Xposed-or-Magisk-Edxposed-with-Genymotion-Device-image-PaaS-)
+2. For Genymotion emulator [Blog Link here](https://support.genymotion.com/hc/en-us/articles/360011385178-How-to-install-Xposed-or-Magisk-Edxposed-with-Genymotion-Device-image-PaaS-)
+3. For Physical device search <Device_name> magisk xda 
 
 
 ### I want to Install  :- 
