@@ -50,10 +50,11 @@ curl -sL https://tinyurl.com/pen-Android | sudo bash
 
 1. All
 2. Move Burpsuite Certificate to Android root folder
-3. Pc Tools (JADX, frida, objection, Android Screen Control & Mirror
+3. Pc Tools (JADX, frida, objection, scrcpy)
 4. Android Frida Server
 5. Fix Frida Server Version mismatch
-6. Android Apps(proxytoogle, proxydroid, ADBwifi)
+6. Android Apps(ProxyToogle, Proxydroid, ADBwifi)
+7. Pull Apk from device 
 0. Exit
 
 I want to install  :-
