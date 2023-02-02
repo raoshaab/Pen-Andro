@@ -17,9 +17,11 @@ This Script will automate the process of installing all necessary tools & tasks 
 
 ```
 curl -sL https://tinyurl.com/pen-Android | sudo bash 
-
 ```
-
+Tool installed , access with command 
+```
+pen-andro
+```
 ## Preconditions
  
 * Kali-Linux or wsl in Windows(Version 1 recommended)  [Installation Method ](https://learn.microsoft.com/en-us/windows/wsl/install) 
@@ -36,7 +38,8 @@ curl -sL https://tinyurl.com/pen-Android | sudo bash
 
 ```console
 
-curl -sL https://tinyurl.com/pen-Android | sudo bash 
+curl -sL https://tinyurl.com/pen-Android | sudo bash
+
 
             mmmmm                         mm              #          mmmm
             #   "#  mmm   m mm            ##   m mm    mmm#   m mm  m"  "m
