@@ -17,23 +17,29 @@ This Script will automate the process of installing all necessary tools & tasks 
 
 ```
 curl -sL https://tinyurl.com/pen-Android | sudo bash 
-
 ```
-
+Tool installed , access with command 
+```
+pen-andro
+```
 ## Preconditions
-
-* Burpsuite proxy Running at 127.0.0.1:8080
+ 
+* Kali-Linux or wsl in Windows(Version 1 recommended)  [Installation Method ](https://learn.microsoft.com/en-us/windows/wsl/install) 
+* Burpsuite proxy Running at 127.0.0.1:8080 or you can specify the ip:port 
 * Rooted Android device connected via adb (Only one device should be connected)
+
 * Magisk App  (It will make installation easy ) 
 1. For Android Virtual device (https://github.com/newbit1/rootAVD)
-2. For Genymotion emulator [Blog Link](https://support.genymotion.com/hc/en-us/articles/360011385178-How-to-install-Xposed-or-Magisk-Edxposed-with-Genymotion-Device-image-PaaS-)
+2. For Genymotion emulator [Blog Link here](https://support.genymotion.com/hc/en-us/articles/360011385178-How-to-install-Xposed-or-Magisk-Edxposed-with-Genymotion-Device-image-PaaS-)
+3. For Physical device search <Device_name> magisk xda 
 
 
 ### I want to Install  :- 
 
 ```console
 
-curl -sL https://tinyurl.com/pen-Android | sudo bash 
+curl -sL https://tinyurl.com/pen-Android | sudo bash
+
 
             mmmmm                         mm              #          mmmm
             #   "#  mmm   m mm            ##   m mm    mmm#   m mm  m"  "m
@@ -47,10 +53,11 @@ curl -sL https://tinyurl.com/pen-Android | sudo bash
 
 1. All
 2. Move Burpsuite Certificate to Android root folder
-3. Pc Tools (JADX, frida, objection, Android Screen Control & Mirror
+3. Pc Tools (JADX, frida, objection, scrcpy)
 4. Android Frida Server
 5. Fix Frida Server Version mismatch
-6. Android Apps(proxytoogle, proxydroid, ADBwifi)
+6. Android Apps(ProxyToogle, Proxydroid, ADBwifi)
+7. Pull Apk from device 
 0. Exit
 
 I want to install  :-
