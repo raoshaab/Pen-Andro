@@ -1,6 +1,6 @@
 # Pen-Andro
 
-![](https://visitor-badge.glitch.me/badge?page_id=raoshaab.flash-repo)
+  [![HitCount](https://hits.dwyl.com/raoshaab/raoshaab/Pen-Andro.svg?style=flat-square)](http://hits.dwyl.com/raoshaab/raoshaab/Pen-Andro)
 
  
 ![](./assets/animation.gif)
